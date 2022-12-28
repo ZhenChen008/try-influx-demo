@@ -15,7 +15,7 @@ public class JdbcTest {
     @Before
     public void getConn(){
         // 获取连接
-        influxDB = InfluxDBFactory.connect("http://localhost:8086", "root", "root");
+        influxDB = InfluxDBFactory.connect("http://localhost:8086", "root", "root");//这里修改成自己对应的用户名和密码
         //设置 使用哪个数据库
         influxDB.setDatabase("myTimeSeriesDB");
     }
