@@ -1,0 +1,57 @@
+卷 Data 的文件夹 PATH 列表
+卷序列号为 4662-8122
+D:.
+│  JDBCdemo.iml
+│  mulv.txt     //文件目录结构打印
+│  pom.xml
+│
+├─src
+│  ├─main
+│  │  ├─java
+│  │  │  └─com
+│  │  │      └─chen
+│  │  │          └─example
+│  │  │              │  JDBCApplication.java       //主启动类
+│  │  │              │
+│  │  │              ├─config     // DAO（Data Access Object）Dao是数据访问层，Dao的作用是封装对数据库的访问：增删改查，不涉及业务逻辑
+│  │  │              │      InfluxdbProperties.java             //UP写的文件1 - 配置数据库 连接信息
+│  │  │              │      InfluxDBTemplate.java               //UP写的文件2 - 工具类封装，里面有各个CRUD 方法
+│  │  │              │
+│  │  │              │   // 这里Dao 层就是 InfluxDBTemplate  参考：https://blog.csdn.net/Restarting2019/article/details/122296373
+│  │  │              │
+│  │  │              │
+│  │  │              │
+│  │  │              ├─controller
+│  │  │              │      HelloController.java            //springboot项目的 控制类
+│  │  │              │
+│  │  │              ├─entity       // Entity层 :实体层，放置一个个实体，及其相应的set、get方法。
+│  │  │              │      Firsttext.java                 //相当于 POJO包的实体类 ，对应test表的实体 叫作 Class Firsttext
+│  │  │              │
+│  │  │              └─service  // Service被称为 业务逻辑层。顾名思义，它处理逻辑上的业务，而不去考虑具体的实现。要提供不同的数据库的服务时，我们只需要面对接口用不同的类实现即可，而不用重复地定义类。
+│  │  │                      FirsttextService.java
+│  │  │                      FirsttextServiceImpl.java
+│  │  │
+│  │  │
+│  │  │
+│  │  └─resources
+│  │         │  application.properties                  //  配置文件  优先使用的,暂时使用yml 代替这个
+│  │         │  application.yml                         // 里面填写了 DB 连接 配置信息
+│  │         │
+│  │         └─Usefulthings
+│  │                QueryResult.java
+│  │
+│  └─test
+│      └─java
+│          └─com
+│              └─chen
+│                  └─example
+│                          JdbcTest.java
+│                          TestForecastService.java
+│
+└─target
+    ├─classes
+    ├─generated-sources
+    │  └─annotations
+    ├─generated-test-sources
+    │  └─test-annotations
+    └─test-classes

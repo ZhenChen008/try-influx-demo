@@ -22,7 +22,7 @@ public class JdbcTest {
     @Before //这个会在所有@Test之前执行
     public void getConn(){
         // 获取连接
-        influxDB = InfluxDBFactory.connect("http://IP地址:8086", "root", "密码");
+        influxDB = InfluxDBFactory.connect("http://43.139.113.23:8086", "root", "scut*6768chen");
         //设置 使用哪个数据库    //        influxDB.setDatabase("myTimeSeriesDB");
         influxDB.setDatabase("loudi");
     }
@@ -107,7 +107,6 @@ public class JdbcTest {
     }
 
 
-
     /**     插入和 查询 基本操作 1
      *       创建 test 表测试
      *
@@ -143,7 +142,7 @@ public class JdbcTest {
                 System.out.println("延时出现了问题啊！");
             }
 
-            Point point_k = Point.measurement("test")
+            Point point_k = Point.measurement("test")       //这里设置 插入的数据表
                     .tag("tags-1", "yellow")
                     .tag("tag-2", "Site02")
                     .addField("wind风力", k-5.0)
@@ -177,7 +176,7 @@ public class JdbcTest {
     public void testBasicCRUD02(){
         // 查询所有数据,暂时设置分页看看
         QueryResult table_test = influxDB.query(
-                new Query("select * from test LIMIT 20 OFFSET 6;", "myTimeSeriesDB"), TimeUnit.MICROSECONDS);
+                new Query("select * from test LIMIT 20 OFFSET 6;", "loudi"), TimeUnit.MICROSECONDS);
         System.out.println(table_test);
 
         // 01-拿到 results
@@ -213,7 +212,6 @@ public class JdbcTest {
             });
         });
     }
-
 
 
     /**         保留策略 ———创建了一个新的库 loudi  和 30天的保存时间,默认使用RP策略 rp_30_days

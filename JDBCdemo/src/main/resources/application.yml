@@ -1,0 +1,8 @@
+influxdbconninfo:
+  url: http://43.139.113.23:8086
+  username: root
+  password: scut*6768chen
+  database: loudi
+  retention: rp_30_days
+
+# 以上是 influxDB 的连接配置信息
