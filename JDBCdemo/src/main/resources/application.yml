@@ -1,7 +1,7 @@
 influxdbconninfo:
-  url: http://43.139.113.23:8086
+  url: http://IP:8086
   username: root
-  password: scut*6768chen
+  password: root
   database: loudi
   retention: rp_30_days
 

@@ -22,7 +22,7 @@ public class JdbcTest {
     @Before //这个会在所有@Test之前执行
     public void getConn(){
         // 获取连接
-        influxDB = InfluxDBFactory.connect("http://43.139.113.23:8086", "root", "scut*6768chen");
+        influxDB = InfluxDBFactory.connect("http://IP:8086", "root", "root");
         //设置 使用哪个数据库    //        influxDB.setDatabase("myTimeSeriesDB");
         influxDB.setDatabase("loudi");
     }
