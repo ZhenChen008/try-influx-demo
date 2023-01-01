@@ -1,8 +1,9 @@
 influxdbconninfo:
-  url: http://IP:8086
+  url: http:// ip:8086
   username: root
-  password: root
+  password:
   database: loudi
   retention: rp_30_days
 
 # 以上是 influxDB 的连接配置信息
+#建议格式： spring.influx.url=http://xxx.xxx.xxx.x

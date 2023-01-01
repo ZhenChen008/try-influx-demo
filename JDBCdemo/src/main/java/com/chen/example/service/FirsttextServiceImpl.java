@@ -42,16 +42,22 @@ public class FirsttextServiceImpl implements FirsttextService {
 
     @Override
     public List<Firsttext> findAll() {
-        List<Firsttext> firsttextList = new ArrayList<>(); // 后面添加用于保存值的
 
+        List<Firsttext> firsttextList1 = influxDBTemplate.selectQuery(
+                                                        "select * from test limit 30 OFFSET 990;",
+                                                        //分页查询最后的 ，LIMIT <= 30条
+        // limit size offset N： 	size表示每页 大小，N表示第几条记录开始查询
+                                                        Firsttext.class);
+        return  firsttextList1;
 
+/*
         //分页查询最后的 ，LIMIT <= 30条
         QueryResult testTableResult = influxDBTemplate.query("select * from test limit 30 OFFSET 990;", "loudi");
 
         List<Firsttext> firsttextListBack = handleQueryResult(testTableResult, Firsttext.class);
         // 以下代码 可以封装成上面一句
 
-/*
+
         List<QueryResult.Result> results = testTableResult.getResults();
         results.forEach( result -> {
             List<QueryResult.Series> seriesList = result.getSeries();
@@ -112,7 +118,6 @@ public class FirsttextServiceImpl implements FirsttextService {
 //        });
 
         return firsttextList;*/
-        return firsttextListBack;
     }
 
 
