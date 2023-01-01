@@ -5,10 +5,16 @@ import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ObjectUtils;
 
+import java.sql.Timestamp;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -94,6 +100,86 @@ public class InfluxDBTemplate {
     }
 
 
+    /**         select 查询封装处理   handleQueryResult(QueryResult res, Class<T> clazz )
+     * @param queryResult  查询返回结果
+     * @param clazz 封装的对象类型
+     * @param <T>   泛型
+     * @return   返回处理结果
+     */
+    public <T> List<T> handleQueryResult(QueryResult queryResult, Class<T> clazz )
+    {// 参考第三节 视频 开头的
+        System.out.println("\n\n调用工具类方法 handleQueryResult(QueryResult queryResult, Class<T> clazz )\n\n");
+        // 定义 保存结果集合
+        List<T> lists = new ArrayList<>();
+
+        // 下面是 解析查询返回结果
+        List<QueryResult.Result> results = queryResult.getResults();
+        results.forEach( result -> {
+            List<QueryResult.Series> seriesList = result.getSeries();
+            seriesList.forEach( x->{  // 两次 遍历
+                // 获取 values 、列名称
+                List<String> columns = x.getColumns();
+                List<List<Object>> values = x.getValues();
+                //遍历 values
+                for(int i=0;i<values.size();i++){
+                    System.out.println("一行数据： "+values.get(i).get(0));
+                    //然后遍历 values,columns拿出来数据
+                    //后面添加的 创建 临时保存对象 一个Point，一个个插入 firsttextList
+                    try {
+                        //然后是给对象 T 属性赋值，通过反射 给对象赋值 getDeclatedConstructor().newInstance();
+                        T instance = clazz.newInstance();
+                        // 使用Spring的 BeanWrapper 反射赋值
+                        BeanWrapperImpl beanWrapper = new BeanWrapperImpl(instance);
+
+                        // 定义一个 Map 记住  tags+field
+                        HashMap<String ,Object> resultFields =new HashMap<>();
+
+                        for(int j=0 ;j<columns.size();j++){
+                            String column_i = columns.get(j);
+                            Object value_i = values.get(i).get(j);
+
+                            if("time".equals(column_i)){        // 这里 通过反射赋值
+                                beanWrapper.setPropertyValue("time",
+                                        Timestamp.from(ZonedDateTime.parse(String.valueOf(value_i)).toInstant()).getTime());
+                                //时间转换
+                            } else {       //上面是单独处理时间，下面是统一处理 filed =tags+field
+                                resultFields.put(column_i,value_i);
+                            }
+                        }
+
+                        System.out.println("    // 通过 反射完成 fields 赋值操作");
+                        beanWrapper.setPropertyValue("fields",resultFields);
+                        lists.add(instance);    // 添加进去 List ,上面是 给 point 赋值
+
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        });
+
+        return  lists;
+    }
+
+
+
+    /**
+     * @param selcetCommand  select查询语句
+     * @param clazz         类型
+     * @param <T>  泛型
+     * @return     结果
+     *
+     *      在有了上面的那个 handleQueryResult(QueryResult queryResult, Class<T> clazz )
+     *   之后，再进一步封装 查询函数 ,还依赖上面的 query()
+     *
+     */
+    public <T> List<T> selectQuery(String selcetCommand, Class<T> clazz ){
+        // 首先查询
+        QueryResult queryResult = query(selcetCommand, "loudi");
+
+        //然后调用查询处理方法 handleQueryResult 进行返回
+        return handleQueryResult(queryResult,clazz);
+    }
 
 
 }

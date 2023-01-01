@@ -3,6 +3,7 @@ package com.chen.example.service;
 import com.chen.example.config.InfluxDBTemplate;
 import com.chen.example.entity.Firsttext;
 import org.influxdb.dto.QueryResult;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -10,6 +11,7 @@ import org.springframework.util.ObjectUtils;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -45,8 +47,11 @@ public class FirsttextServiceImpl implements FirsttextService {
 
         //分页查询最后的 ，LIMIT <= 30条
         QueryResult testTableResult = influxDBTemplate.query("select * from test limit 30 OFFSET 990;", "loudi");
-//        System.out.println("查看一下返回结果： "+testTableResult);
 
+        List<Firsttext> firsttextListBack = handleQueryResult(testTableResult, Firsttext.class);
+        // 以下代码 可以封装成上面一句
+
+/*
         List<QueryResult.Result> results = testTableResult.getResults();
         results.forEach( result -> {
             List<QueryResult.Series> seriesList = result.getSeries();
@@ -106,14 +111,11 @@ public class FirsttextServiceImpl implements FirsttextService {
 //
 //        });
 
-        return firsttextList;
+        return firsttextList;*/
+        return firsttextListBack;
     }
 
-    public <T> List<T>  handleQueryResult(QueryResult )
-    // 参考第三节 视频 开头的
-    {
 
-    }
 
 
 }
