@@ -5,6 +5,7 @@ import com.chen.example.entity.Firsttext;
 import java.util.List;
 
 public interface FirsttextService {
+
     //方法-1  保存
     void save(Firsttext forecast);
 

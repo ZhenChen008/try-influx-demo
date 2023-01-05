@@ -2,6 +2,8 @@ package com.chen.example.service;
 
 import com.chen.example.config.InfluxDBTemplate;
 import com.chen.example.entity.Firsttext;
+import org.influxdb.InfluxDB;
+import org.influxdb.dto.Point;
 import org.influxdb.dto.QueryResult;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,11 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class FirsttextServiceImpl implements FirsttextService {
-
-    List <Firsttext> point_firstList = new ArrayList<>();
 
     private final InfluxDBTemplate influxDBTemplate;
     private final String Table_Name ="test"; // 代替表名称
@@ -29,16 +30,23 @@ public class FirsttextServiceImpl implements FirsttextService {
     }
 
 
+
     @Override
     public void save(Firsttext forecast) {
-        //写入信息，首先可以确定 表明，然后是 tag、time、field
-        influxDBTemplate.write(Table_Name,
-                forecast.getTags(),
-                forecast.getFields(),
-                forecast.getTime(),
-                TimeUnit.MILLISECONDS);
+/*
+        Point.Builder builder = Point.measurement(Table_Name);
 
+        builder.tag(forecast.getTags());
+        builder.fields(forecast.getFields());
+        builder.time(forecast.getTime(), TimeUnit.MILLISECONDS);
+        Point data_point = builder.build();
+
+*/
+        //写入信息 参数，首先可以确定 表名，然后是 tag、time、field
+        influxDBTemplate.write( Table_Name,
+                forecast.getTags(),forecast.getFields(),forecast.getTime(),TimeUnit.MILLISECONDS);
     }
+
 
     @Override
     public List<Firsttext> findAll() {
@@ -119,7 +127,6 @@ public class FirsttextServiceImpl implements FirsttextService {
 
         return firsttextList;*/
     }
-
 
 
 

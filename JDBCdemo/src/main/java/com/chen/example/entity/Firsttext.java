@@ -1,6 +1,8 @@
 package com.chen.example.entity;
 
 
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,46 +11,18 @@ import java.util.Map;
  *      我这里随便取为 Firsttext
  *
  */
+
+@Data
 public class Firsttext {
-    // 时间项 可以固定
+    // 时间项 可以固定 ,暂时确定为 Long 类型
     private Long time;
 
     //处理其它两项———— tags、fields
     private Map<String,String> tags = new HashMap<>();  //这里是根据实战一 后面添加 为了方便写的
     private Map<String,Object> fields= new HashMap<>();
 
-    /**  然后加上 Getter、Setter() 方法
+    /**
+     * 然后加上 Getter、Setter() 方法 toString()
+     *      使用 lombok 的 @Data
      */
-    public Long getTime() {
-        return time;
-    }
-
-    public void setTime(Long time) {
-        this.time = time;
-    }
-
-    public Map<String, String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Map<String, String> tags) {
-        this.tags = tags;
-    }
-
-    public Map<String, Object> getFields() {
-        return fields;
-    }
-
-    public void setFields(Map<String, Object> fields) {
-        this.fields = fields;
-    }
-
-    @Override
-    public String toString() {
-        return "Firsttext{" +
-                "time=" + time +
-                ", tags=" + tags +
-                ", fields=" + fields +
-                '}';
-    }
 }

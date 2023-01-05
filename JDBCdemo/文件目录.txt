@@ -17,8 +17,8 @@ D:.
 │  │  │              │      InfluxdbProperties.java             //UP写的文件1 - 配置数据库 连接信息
 │  │  │              │      InfluxDBTemplate.java               //UP写的文件2 - 工具类封装，里面有各个CRUD 方法
 │  │  │              │
-│  │  │              │   // 这里Dao 层就是 InfluxDBTemplate  参考：https://blog.csdn.net/Restarting2019/article/details/122296373
-│  │  │              │
+│  │  │              │     // 这里Dao 层就是 InfluxDBTemplate  参考：https://blog.csdn.net/Restarting2019/article/details/122296373
+│  │  │              │     // InfluxDBTemplate 的构造方法里面获取了 连接 ，然后有个   public void close() 方法关闭连接
 │  │  │              │
 │  │  │              │
 │  │  │              ├─controller
@@ -45,8 +45,8 @@ D:.
 │          └─com
 │              └─chen
 │                  └─example
-│                          JdbcTest.java
-│                          TestForecastService.java
+│                          JdbcTest.java            //测试JDBC功能的
+│                          TestForecastService.java         //测试 springboot CRUD
 │
 └─target
     ├─classes

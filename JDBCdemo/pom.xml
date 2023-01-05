@@ -36,16 +36,12 @@
         <dependency>
             <groupId>org.influxdb</groupId>
             <artifactId>influxdb-java</artifactId>
-            <version>2.8</version>
-<!-- 指定版本 2.23,跟着视频学习使用的 ,最新有时也2.8的-->
+            <version>2.23</version>
+            <!-- 指定版本 2.23,跟着视频学习使用的 ,最新有时也2.8的-->
+            <!--    后续反转，查看 maven中央仓库发现，2.23才是最新版本，比较2.8新了 5年！        -->
+            <!--          初步整合springboot后换成 2.23 最新版本  -->
         </dependency>
-        <!-- 参考 https://blog.csdn.net/lissic_blog/article/details/118573244
-                          influxdb-->
-        <!--        <dependency>
-                    <groupId>com.influxdb</groupId>
-                    <artifactId>influxdb-client-java</artifactId>
-                    <version>2.3.0</version>
-                </dependency>-->
+
 
 <!--  IDEA + Spring Boot 的三种热加载方案
             spring-boot-devtools 不是真的热部署，而是更快的重启方式。 -->
@@ -60,6 +56,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
         </dependency>
 
 <!--    在编译项目时调用该处理器。@ConfigurationPropertiesspring-boot-configuration-processor    -->

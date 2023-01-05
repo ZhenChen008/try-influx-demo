@@ -35,8 +35,8 @@ public class JdbcTest {
 
 
     /**
-     * 库的基本操作 创建一个库  使用一个库   删除一个库
-     * 已经创建了数据库 myTimeSeriesDB
+     *      库的基本操作 创建一个库  使用一个库   删除一个库
+     *      已经创建了数据库 myTimeSeriesDB
      */
     @Test
     public void testDataBase(){
