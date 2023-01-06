@@ -2,15 +2,19 @@ package com.chen.example.service;
 
 import com.chen.example.config.InfluxDBTemplate;
 import com.chen.example.entity.Firsttext;
+import com.chen.example.entity.TestPoint;
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.Point;
+import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
+import org.influxdb.impl.InfluxDBResultMapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class FirsttextServiceImpl implements FirsttextService {
+
 
     private final InfluxDBTemplate influxDBTemplate;
     private final String Table_Name ="test"; // 代替表名称
@@ -128,6 +133,43 @@ public class FirsttextServiceImpl implements FirsttextService {
         return firsttextList;*/
     }
 
+    // 方法-3 插入数据（使用 POJO的方式）
+    @Override
+    public void insertByPojo(TestPoint testPoint) {
 
+/*        // ... setting data
+        point.setTime(Instant.now());
+        // 也可以 赋值 System.currentTimeMillis(), TimeUnit.MILLISECONDS
+        point.setTagOne("red");
+        point.setTagTwo("HongKong");
+        point.setWaterVol(28);
+        point.setWindForce(2023.14);
+        point.setNote("use MVC in Service");*/
+        //influx write处理
+        Point build_point = Point.measurementByPOJO(TestPoint.class).addFieldsFromPOJO(testPoint).build();
+        System.out.println("看看 input = build_point ："+build_point);
+
+        // 调用 write 给 Dao层传入一个 point对象
+        influxDBTemplate.write(build_point);
+
+    }
+
+
+    /**     方法-4 查询全部并且使用Mapper
+     *       List<TestPoint> selectAllByMapper();
+     *
+     * @return
+     */
+    @Override
+    public List<TestPoint> selectAllByMapper() {
+        QueryResult queryResult = influxDBTemplate.query(
+                "SELECT * FROM test2023 LIMIT 20 ", "loudi");
+
+        // 需要从 influxDBTemplate 返回一个 QueryResult ,所以需要上面的代码
+        InfluxDBResultMapper resultMapper = new InfluxDBResultMapper(); // thread-safe - can be reused
+        List<TestPoint> pointList = resultMapper.toPOJO(queryResult, TestPoint.class);
+        return pointList;
+
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.chen.example.config;
 
+import com.chen.example.entity.TestPoint;
 import org.influxdb.InfluxDB;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.BatchPoints;
@@ -17,7 +18,13 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-
+/**     工具类 Util是  utiliy
+ *  本来是通用的、与业务无关的，可以独立出来，可供其他项目使用。
+ *
+ *  本文件 类似 工具类，但也有 Dao功能
+ *  Dao的作用是封装对数据库的访问：增删改查，不涉及业务逻辑
+ *
+ */
 /*             这里有的使用 @Component，然后使用时就是   @Configuration 和 @Component 到底有啥区别？
              @Autowired
     private InfluxDBUtils influxDBUtils;*/
@@ -54,6 +61,7 @@ public class InfluxDBTemplate {
                 influxDB.setRetentionPolicy(influxdbProperties.getRetention());
             }
         }
+        influxDB.setLogLevel(InfluxDB.LogLevel.BASIC);  // 设置日志打印级别  NONE、 BASIC、HEADERS 打印更加详细
     }
 
 
@@ -352,5 +360,18 @@ public class InfluxDBTemplate {
 */
 
     // 查看方法之间的 调用关系： https://cloud.tencent.com/developer/article/1830952
+
+
+    /**   后面补充的 MVC 形式插入数据点 Point
+     *
+     * @param build_point 插入的对象经过 build()之后的 Point
+     */
+    public void write( Point build_point)
+    {
+        influxDB.write("loudi","rp_30_days",build_point);
+        //单条插入,需要先定义 Point    influxDB.write(Point point)
+        close();
+    }
+
 
 }

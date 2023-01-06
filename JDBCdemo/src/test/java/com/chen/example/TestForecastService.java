@@ -9,6 +9,7 @@ import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
+import org.influxdb.impl.InfluxDBMapper;
 import org.influxdb.impl.InfluxDBResultMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,6 +53,7 @@ public class TestForecastService {
         // 设置日志级别 BASIC
         influxDB.setLogLevel(InfluxDB.LogLevel.BASIC);  // NONE、 BASIC、HEADERS 打印更加详细
 
+        // 这个之后看源码了解一下使用 怎么设置 InfluxDBMapper influxDBMapper = new InfluxDBMapper(influxDB);
 
         TestPoint point1 = new TestPoint();     //定义一个 point对象
 //        看看怎么使用 使用 POJO 写作
@@ -75,18 +77,23 @@ public class TestForecastService {
         influxDB.write("loudi","rp_30_days",build_point);
 //  这个是错误的写法     influxDB.write(build_point);
 
+
+//        Dao层
         QueryResult queryResult = influxDB.query(new Query("SELECT * FROM test2023 LIMIT 20 "));
 
 
+//        服务层 impl
         System.out.println("之前输出打印的：\n"+queryResult);
         // 首先 查询一下 数据库表 返回结果
 
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper(); // thread-safe - can be reused
         List<TestPoint> testPoints = resultMapper.toPOJO(queryResult, TestPoint.class);
 
+//        controller
         System.out.println("之后输出打印的：\n"+testPoints);
 //        influxDBMapper  问题。似乎使用write不是使用influxDBMapper的方法，而是应该使用influxDBMapper.save（）。
     }
+
 
     @Test
     public void testSave(){
