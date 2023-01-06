@@ -6,3 +6,6 @@
 
 ## 2023-1-5 使用springboot 初步实现读写功能
 > ![image](https://user-images.githubusercontent.com/121101025/210701088-4166da19-9144-409b-b32a-7787558f22b0.png)
+
+## 1-6 MVC分层后提交，注意commit时取消了上传yml配置文件
+![image](https://user-images.githubusercontent.com/121101025/211040510-9d9c5844-84c8-4c7c-9e26-872b0bc483da.png)
