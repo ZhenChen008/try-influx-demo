@@ -45,6 +45,7 @@ public class InfluxDBTemplate {
         getInfluxDB(); // 一开始 就获取了连接
     }
 
+
     /**
      * 方法 1-获取 influxdb 连接
      */
@@ -152,13 +153,12 @@ public class InfluxDBTemplate {
      * @param timeUnit    时间单位
      */
     public void write(String measurement, Map<String, String> tags, Map<String, Object> fields, long time, TimeUnit timeUnit) {
-        Point point = Point.measurement(measurement)   // 按照 Map赋值 tag和 fields
+        Point.Builder point_build = Point.measurement(measurement)   // 按照 Map赋值 tag和 fields
                 .tag(tags)
                 .fields(fields)
-                .time(time, timeUnit)
-                .build();
-        System.out.println("Let us look at the Point: \n"+point);
-        influxDB.write(point);
+                .time(time, timeUnit);
+        System.out.println("Let us look at the Point: \n");
+        influxDB.write(point_build.build());
         close();
     }
 
@@ -217,7 +217,19 @@ public class InfluxDBTemplate {
      * @param batchPoints 批量记录  推荐 1000 条作为一个批
      */
     public void writeBatch(BatchPoints batchPoints ) {
+
+//        BatchPoints batchPoints2 = BatchPoints.database("loudi").retentionPolicy("rp_30_days").build();
+        // 加入具体的点
         influxDB.write(batchPoints);
+        close();
+    }
+
+    /**
+     * @param batchRecords
+     */
+    public void batchLinesInsert(List<String> batchRecords) {
+        influxDB.write("loudi","rp_30_days",
+                InfluxDB.ConsistencyLevel.ALL, batchRecords);
         close();
     }
 

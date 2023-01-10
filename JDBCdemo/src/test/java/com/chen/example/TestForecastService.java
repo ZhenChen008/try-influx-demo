@@ -127,6 +127,27 @@ public class TestForecastService {
         selectAll.forEach(System.out::println);
 
     }
+
+
+    @Test
+    public void test_every_select(){
+        System.out.println("测试 D:\\Javachen1008\\TSDB学习经验 ......\\笔记 第八页");
+        /**
+
+         * 构建Point
+         *
+         * @param measurement
+         * @param time
+         * @param fields
+         * @return
+
+        public Point pointBuilder(String measurement, long time, Map<String, String> tags, Map<String, Object> fields) {
+            Point point = Point.measurement(measurement).time(time, TimeUnit.MILLISECONDS).tag(tags).fields(fields).build();
+            return point;
+        }
+         */
+
+    }
 }
 
 

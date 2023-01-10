@@ -4,6 +4,7 @@ import com.chen.example.config.InfluxDBTemplate;
 import com.chen.example.entity.Firsttext;
 import com.chen.example.entity.TestPoint;
 import org.influxdb.InfluxDB;
+import org.influxdb.dto.BatchPoints;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
@@ -27,7 +28,7 @@ public class FirsttextServiceImpl implements FirsttextService {
 
 
     private final InfluxDBTemplate influxDBTemplate;
-    private final String Table_Name ="test"; // 代替表名称
+    private final String Table_Name ="test2023"; // 代替表名称
 
     @Autowired  // 实际上 推荐使用构造器注入
     public FirsttextServiceImpl(InfluxDBTemplate influxDBTemplate) {
@@ -169,7 +170,18 @@ public class FirsttextServiceImpl implements FirsttextService {
         InfluxDBResultMapper resultMapper = new InfluxDBResultMapper(); // thread-safe - can be reused
         List<TestPoint> pointList = resultMapper.toPOJO(queryResult, TestPoint.class);
         return pointList;
-
     }
 
+
+    // 方法-5    批量写入数据 -1
+    @Override
+    public void insertByBatch(BatchPoints batchPoints) {
+        influxDBTemplate.writeBatch(batchPoints);
+    }
+
+    // 方法-6    批量写入数据 -2
+    @Override
+    public void batchLinesInsert( List<String> batchRecords) {
+        influxDBTemplate.batchLinesInsert(batchRecords);
+    }
 }
