@@ -9,3 +9,9 @@
 
 ## 1-6 MVC分层后提交，注意commit时取消了上传yml配置文件
 ![image](https://user-images.githubusercontent.com/121101025/211040510-9d9c5844-84c8-4c7c-9e26-872b0bc483da.png)
+
+
+## 1-10 用于对比，之后将清理一下 代码，实现lines插入
+> ![image](https://user-images.githubusercontent.com/121101025/211609340-0074cd97-7d50-4e42-ab8a-161e94cec6a1.png)
+
+
